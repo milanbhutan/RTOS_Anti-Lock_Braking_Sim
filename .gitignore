@@ -1,0 +1,22 @@
+# STM32CubeIDE build output
+Debug/
+Release/
+
+# Build artifacts
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.su
+*.a
+
+# CubeIDE workspace/private settings
+.metadata/
+.settings/
+
+# OS junk
+.DS_Store
+Thumbs.db
