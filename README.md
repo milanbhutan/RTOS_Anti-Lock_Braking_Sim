@@ -15,11 +15,14 @@
 
 <img width="540" height="555" alt="image" src="https://github.com/user-attachments/assets/5888d326-1056-4f23-a04a-6cddf0212527" />
 
+
 8. Click "Finish" to create your Debug file and then click on the green bug at the top of the IDE to start debugging.
 
 <img width="747" height="137" alt="image" src="https://github.com/user-attachments/assets/47c99b63-c2a8-443f-bb63-ec1917ac4809" />
 
+
 9. Click on the Resume bottom at the top of the IDE and to start running the code on the board.
 
-<img width="812" height="136" alt="image" src="https://github.com/user-attachments/assets/2c2d23de-fca3-4dc7-897d-4ab797d60778" />
+<img width="453" height="94" alt="image" src="https://github.com/user-attachments/assets/d122a09c-f8b2-4a07-9e18-ac3fde8c12f3" />
+
 
