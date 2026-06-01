@@ -53,21 +53,21 @@ const osThreadAttr_t Task4_attributes ={
 
 osThreadId_t motor2Handle;
 const osThreadAttr_t Task5_attributes ={
-	.name="Task4",
+	.name="Task5",
 	.stack_size=128*4,
 	.priority=(osPriority_t) osPriorityLow,
 };
 
 osThreadId_t uartHandle;
 const osThreadAttr_t Task6_attributes ={
-	.name="Task4",
+	.name="Task6",
 	.stack_size=128*4,
 	.priority=(osPriority_t) osPriorityLow,
 };
 
 osThreadId_t ledHandle;
 const osThreadAttr_t Task7_attributes ={
-	.name="Task4",
+	.name="Task7",
 	.stack_size=128*4,
 	.priority=(osPriority_t) osPriorityLow,
 };
