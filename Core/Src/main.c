@@ -20,51 +20,53 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "event_groups.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 /* Definitions for Task1 */
-osThreadId_t Task1Handle;
+osThreadId_t ABSHandle;
 const osThreadAttr_t Task1_attributes = {
   .name = "Task1",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for Task2 */
-osThreadId_t Task2Handle;
+osThreadId_t motorSlipHandle;
 const osThreadAttr_t Task2_attributes = {
   .name = "Task2",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* USER CODE BEGIN PV */
-osThreadId_t Task3Handle;
+osThreadId_t buttHandle;
 const osThreadAttr_t Task3_attributes = {
   .name = "Task3",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 
-osThreadId_t Task4Handle;
+osThreadId_t motor1Handle;
 const osThreadAttr_t Task4_attributes ={
+	.name="Task4",
+	.stack_size=128*4,
+	.priority=(osPriority_t) osPriorityLow,
+};
+
+osThreadId_t motor2Handle;
+const osThreadAttr_t Task5_attributes ={
+	.name="Task4",
+	.stack_size=128*4,
+	.priority=(osPriority_t) osPriorityLow,
+};
+
+osThreadId_t uartHandle;
+const osThreadAttr_t Task6_attributes ={
+	.name="Task4",
+	.stack_size=128*4,
+	.priority=(osPriority_t) osPriorityLow,
+};
+
+osThreadId_t ledHandle;
+const osThreadAttr_t Task7_attributes ={
 	.name="Task4",
 	.stack_size=128*4,
 	.priority=(osPriority_t) osPriorityLow,
@@ -76,13 +78,16 @@ EventGroupHandle_t EventGroup1;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-void StartTask1(void *argument);
-void StartTask2(void *argument);
 
-/* USER CODE BEGIN PFP */
-void StartTask3(void *argument);
-void StartTask4(void *argument);
-/* USER CODE END PFP */
+void ABSTask(void *argument);
+void motorSlipTask(void *argument);
+
+void buttTask(void *argument);
+void motor1Task(void *argument);
+void motor2Task(void *argument);
+
+void uartTask(void *argument);
+void ledTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
@@ -131,28 +136,15 @@ int main(void)
   /* Init scheduler */
   osKernelInitialize();
 
-  /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
-
-  /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
-
-  /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
-
   /* Create the thread(s) */
   /* creation of Task1 */
-  Task1Handle = osThreadNew(StartTask1, NULL, &Task1_attributes);
-  Task2Handle = osThreadNew(StartTask2, NULL, &Task2_attributes);
-  Task3Handle = osThreadNew(StartTask3, NULL, &Task3_attributes);
-  Task4Handle = osThreadNew(StartTask4, NULL, &Task4_attributes);
+  ABSHandle = osThreadNew(ABSTask, NULL, &Task1_attributes);
+  motorSlipHandle = osThreadNew(motorSlipTask, NULL, &Task2_attributes);
+  buttHandle = osThreadNew(buttTask, NULL, &Task3_attributes);
+  motor1Handle = osThreadNew(motor1Task, NULL, &Task4_attributes);
+  motor2Handle = osThreadNew(motor2Task, NULL, &Task5_attributes);
+  uartHandle = osThreadNew(uartTask, NULL, &Task6_attributes);
+  ledHandle = osThreadNew(ledTask, NULL, &Task7_attributes);
   /* creation of Task2 */
 
 
@@ -300,44 +292,22 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void StartTask1(void *argument)
+void ABSTask(void *argument)
 {
   /* USER CODE BEGIN StartTask2 */
 	osDelay(300);
 	xEventGroupSetBits(EventGroup1,1<<0);
-	xTaskNotifyGive(Task2Handle);
+	xTaskNotifyGive(ABSHandle);
 	vTaskSuspend(NULL);
   /* USER CODE END StartTask2 */
 }
-/* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartTask1 */
-/**
-  * @brief  Function implementing the Task1 thread.
-  * @param  argument: Not used
-  * @retval None
-  */
-/* USER CODE END Header_StartTask1 */
-void StartTask2(void *argument)
+void motorSlipTask(void *argument)
 {
-  /* USER CODE BEGIN 5 */
-	for(;;){
-		ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-		xEventGroupSetBits(EventGroup1,1<<1);
-		xTaskNotifyGive(Task3Handle);
-		osDelay(500);
-	}
-  /* USER CODE END 5 */
+  //
 }
 
-/* USER CODE BEGIN Header_StartTask2 */
-/**
-* @brief Function implementing the Task2 thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartTask2 */
-void StartTask3(void *argument)
+void buttonTask(void *argument)
 {
 	for(;;){
 		ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
@@ -347,16 +317,24 @@ void StartTask3(void *argument)
 	}
 }
 
-
-void StartTask4(void *argument)
+void motor1Task(void *argument)
 {
-	xEventGroupWaitBits(EventGroup1,0b111,pdTRUE,pdTRUE,portMAX_DELAY);
-	for(;;){
-		GPIOC->BSRR=GPIO_PIN_7;
-		osDelay(500);
-		GPIOC->BRR=GPIO_PIN_7;
-		osDelay(500);
-	}
+	//
+}
+
+void motor2Task(void *argument)
+{
+	//
+}
+
+void uartTask(void *argument)
+{
+	//
+}
+
+void ledTask(void *argument)
+{
+	//
 }
 
 /**
