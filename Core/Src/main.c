@@ -292,22 +292,20 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void ABSTask(void *argument)
+void ABSTask(void *argument) //on button hold
 {
-  /* USER CODE BEGIN StartTask2 */
 	osDelay(300);
 	xEventGroupSetBits(EventGroup1,1<<0);
 	xTaskNotifyGive(ABSHandle);
 	vTaskSuspend(NULL);
-  /* USER CODE END StartTask2 */
 }
 
-void motorSlipTask(void *argument)
+void motorSlipTask(void *argument) //Detect diff btwn motor spd
 {
   //
 }
 
-void buttTask(void *argument)
+void buttTask(void *argument) //on button hold to break
 {
 	for(;;){
 		ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
@@ -327,12 +325,12 @@ void motor2Task(void *argument)
 	//
 }
 
-void uartTask(void *argument)
+void uartTask(void *argument) //showing spd
 {
 	//
 }
 
-void ledTask(void *argument)
+void ledTask(void *argument) //show breaking is working
 {
 	//
 }
