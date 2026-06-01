@@ -307,7 +307,7 @@ void motorSlipTask(void *argument)
   //
 }
 
-void buttonTask(void *argument)
+void buttTask(void *argument)
 {
 	for(;;){
 		ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
