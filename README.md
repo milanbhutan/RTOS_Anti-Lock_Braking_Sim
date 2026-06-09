@@ -1,4 +1,20 @@
-# RTOS_Anti-Lock_Braking_Sim
+# RTOS_Anti-Lock_Braking_Sim (In-progress)
+
+## Project Overview
+
+## Parts List
+
+1× Nucleo L4A6ZG (emulates ABS computer)
+1× L298N Motor Driver 
+2× DC Motors (emulates wheels)
+2× LEDs (indicates braking and ABS activation)
+2× Push Buttons (acts as soft and hard brake)
+2× 560Ω Resistors (current limiting for LEDs)
+1× 5V Power Module
+
+## Hardware Layout
+
+<img width="1957" height="1174" alt="image" src="https://github.com/user-attachments/assets/67ab4188-1d7b-4ecb-9215-0e8136b053ca" />
 
 ## Opening in STM32CubeIDE
 
