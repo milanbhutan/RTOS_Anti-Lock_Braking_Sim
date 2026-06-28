@@ -18,10 +18,6 @@ The purpose of this project is to model an anti-lock braking system using FreeRT
 
 The Nucleo L4A6ZG sits at the center of the circuit, handling all control logic. Two push buttons are connected to GPIO input pins PC0 and PC1 with internal pull-ups, used to trigger soft and hard braking events. PWM signals are output from PA0 and PA1 to the ENA and ENB enable pins of the L298N motor driver, which controls the speed of the two DC motors via its OUTA and OUTB channels. The L298N is powered by an external 5V power module to supply enough current for the motors. Two LEDs are connected to GPIO output pins PB0 and PB1 through 560Ω current-limiting resistors to indicate braking and ABS activation status.
 
-## RTOS Tasks
-
-## Rate Monotonic Scheduling
-
 ## Opening in STM32CubeIDE
 
 1. Clone this repository.
