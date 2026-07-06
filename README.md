@@ -18,6 +18,10 @@ The purpose of this project is to model an anti-lock braking system using FreeRT
 
 The Nucleo L4A6ZG sits at the center of the circuit, handling all control logic. Two push buttons are connected to GPIO input pins PC0 and PC1 with internal pull-ups, used to trigger soft and hard braking events. PWM signals are output from PA0 and PA1 to the ENA and ENB enable pins of the L298N motor driver, which controls the speed of the two DC motors via its OUTA and OUTB channels. The L298N is powered by an external 5V power module to supply enough current for the motors. Two LEDs are connected to GPIO output pins PB0 and PB1 through 560Ω current-limiting resistors to indicate braking and ABS activation status.
 
+## Scheduling Design
+
+A rate-monotonic scheduler was proposed to ensure our high priority tasks would not miss their deadlines. The ABS task was given the highest priority in our design as it was responsible for mitigating wheel lockup, making it a critical task for vehicle safety. The second-highest priority would be our motor slip detection task as it should detect changes in motor slip quickly and only be preempted by the ABS task to reduce motor slippage. The lower priority tasks in our design were our motor control task, LED motor status task, and UART display task. The UART task was given the lowest priority since we did not want this task to preempt higher priority and risk having our critical safety tasks miss their deadlines.
+
 ## Opening in STM32CubeIDE
 
 1. Clone this repository.
